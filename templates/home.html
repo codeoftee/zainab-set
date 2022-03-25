@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootstrap.css') }}">
+    <script src="{{ url_for('static', filename='assets/js/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/bs/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/index.js') }}"></script>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center">Welcome To Stocks Management</h1>
+    <div class="content">
+
+        <p style="color: red">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <b>{{ message }}</b>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </p>
+        <div>
+            {% if user_profile %}
+                <p>Logged in as {{ user_profile.firstname }},
+                    <a href="/logout">logout</a>
+                </p>
+            {% else %}
+                <p>
+                    <a href="/login">Click here to login</a>
+                </p>
+            {% endif %}
+        </div>
+        <p>
+            For Android devices, the Ionic CLI will automatically forward the dev server port. This means you can use a
+            localhost address and it will refer to your computer when loaded in the Web View, not the device.
+            The following all-in-one command will start a live-reload server on localhost and deploy the app to an
+            Android device using Cordova:
+        </p>
+
+        <div class="m-3">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+                {% for item in products %}
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            {% if not item['image'] %}
+                                <img src="{{ url_for('static', filename='img/elsa.png') }}" style="width: 100%">
+                            {% else %}
+                                <img src="/uploads/{{ item['picture'] }}" style="width: 100%">
+                            {% endif %}
+
+                            <div class="card-body">
+                                <p class="card-text mb-0">{{ item['title'] }}</p>
+                                <p class="card-text" style="margin-top: 0">&#8358; {{ item['price'] }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a href="/edit/{{ item.id }}" class="btn btn-sm btn-secondary">Edit</a>
+                                        <a href="/delete/{{ item.id }}" type="button" class="btn btn-sm btn-danger">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

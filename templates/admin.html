@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootstrap.css') }}">
+    <script src="{{ url_for('static', filename='assets/js/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/bs/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/index.js') }}"></script>
+
+</head>
+<body>
+
+<div class="container">
+    <h4 class="text-center">Stock Admin</h4>
+    <div style="padding: 20px; text-align: center; color: red">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <b>{{ message }}</b>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div>
+        <h5>All Products <span style="float: right; font-size: smaller">
+            <a href="/add-product">Add New</a> </span>
+        </h5>
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+            {% for item in products %}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="text-center">
+                            {% if not item['picture'] %}
+                            <img src="{{ url_for('static', filename='img/elsa.png') }}" style="width: 100%">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='uploads/'+item['picture']) }}" style="height: 200px">
+                        {% endif %}
+                        </div>
+
+                        <div class="card-body">
+                            <p class="card-text mb-0">{{item['title']}}</p>
+                            <p class="card-text" style="margin-top: 0">&#8358; {{item['price']}}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a href="/edit/{{ item.id }}" class="btn btn-sm btn-secondary">Edit</a>
+                                    <a href="/delete/{{ item.id }}" type="button" class="btn btn-sm btn-danger">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             {% endfor %}
+            </div>
+    </div>
+</div>
+
+</body>
+</html>
